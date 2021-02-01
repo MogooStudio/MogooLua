@@ -1,7 +1,7 @@
 # MogooLua
 lua记录
 
-### folder
+### folders
 - functional: 方法集合
 - uiframe: ui框架尝试
 
