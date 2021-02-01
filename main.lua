@@ -1,27 +1,17 @@
-require "class"
+require "init"
+require "test"
 
+--[[
+uiframe template
 
-local base_class = class()
+]]
 
-function base_class:ctor()
-	print("base_class:ctor")
-end
+local m = ViewModel.new("test")
+local t = Test.new(m)
 
-function base_class:aa()
-	print("aa")
-end
-
-
-local bb = class(base_class)
-
-function bb:ctor()
-	print("bb:ctor")
-end
-
-function bb:bb()
-	print("bb")
-end
-
-local c = bb.new()
-
-print(c:bb())
+local m1 = ViewModel.new("Theme")
+local test = ViewControl.new(m1)
+test:addListener("a", t, handler(t, t.onShow))
+test:addListener("b", t, handler(t, t.onClicked))
+-- test:removeAllListener("a")
+test:notify()
