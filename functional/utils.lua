@@ -1,6 +1,9 @@
 
 utils = utils or {}
 
+-- 获取星期
+-- @param tm number
+-- @return number
 function utils.GetWeek( tm )
 	local temp = os.date("*t", tm)
 	local week = temp.wday - 1
@@ -8,6 +11,7 @@ function utils.GetWeek( tm )
 end
 
 -- 获取到当日凌晨的剩余时间 返回秒数
+-- @return number
 function utils.GetReaminSecondsTo24()
 	local toYear = os.date("*t").year
     local toMonth = os.date("*t").month
@@ -18,23 +22,91 @@ function utils.GetReaminSecondsTo24()
 end
 
 function utils.Second2DHMS( second )
-	if second <= 0 then
+    if second <= 0 then
         return 0,0,0,0
     end
-    local d = math.floor(second / 86400)
-    second = second - d * 86400
-
-    local h = math.floor(second / 3600)
-    second = second - h * 3600
-
-    local m = math.floor(second / 60)
-    second = second - m * 60
-
-    local s = second
-
-    return d, h, m, s
+    local day = math.floor(second / 86400)
+    second = second - day * 86400
+    local hour = math.floor(second / 3600)
+    second = second - hour * 3600
+    local min = math.floor(second / 60)
+    second = second - min * 60
+    local sec = second
+    return day, hour, min, sec
 end
 
+function utils.Second2HMS( second )
+    if second <= 0 then
+        return 0,0,0
+    end
+    local hour = math.floor(second / 3600)
+    local min = math.floor(second % 3600 / 60)
+    local sec = second % 60
+    return hour, min, sec
+end
+
+function utils.Second2HM( second )
+    if second <= 0 then
+        return 0,0
+    end
+    local hour = math.floor(second / 3600)
+    local min = math.floor(second % 3600 / 60)
+    return hour, min
+end
+
+function utils.Second2MS( second )
+    if second <= 0 then
+        return 0,0
+    end
+    local min = math.floor(second / 60)
+    local sec = second % 60
+    return min, sec
+end
+
+-- 格式化时间：x小时:x分钟:x秒
+-- @param second number
+-- @return string
+function utils.FormatTimeHMS( second )
+    local hour, min, sec = utils.Second2HMS(second)
+    return string.format("%02d:%02d:%02d", hour, min, sec)
+end
+
+-- 格式化时间：x小时:x分钟
+-- @param second number
+-- @return string
+function utils.FormatTimeHM( second )
+    local hour, min = utils.Second2HM(second)
+    return string.format("%02d:%02d", hour, min)
+end
+
+-- 格式化时间：x分钟:x秒
+-- @param second number
+-- @return string
+function utils.FormatTimeMS( second )
+    local min, sec = utils.Second2MS(second)
+    return string.format("%02d:%02d", min, sec)
+end
+
+-- 格式化时间：x天x小时:x分钟:x秒
+-- @param second number
+-- @return string
+function utils.FormatTime( second )
+    local day, hour, min, sec = utils.Second2DHMS(second)
+    if day > 0 then
+        return string.format("%d天%d:%d:%d", day, hour, min, sec)
+    end
+    if hour > 0 then
+        return string.format("%d:%d:%d", hour, min, sec)
+    end
+    if min > 0 then
+        return string.format("%d:%d", min, sec)
+    end
+    return tonumber(sec)
+end
+
+-- 格式化星期：星期x
+-- @param tm number
+-- @return string
 function utils.FormatWeekDay( tm )
     local weekDay = utils.GetWeek(tm)
     local ret = "星期{1}"
@@ -57,26 +129,9 @@ function utils.FormatWeekDay( tm )
     return utils.FormatText(ret, weekData)
 end
 
-function utils.FormatTime( _ls )
-	local _d, _h, _m, _s = utils.Second2DHMS(_ls)
-    local timeData = ""
-    if _h < 10 then
-        _h = "0".._h
-    end
-    if _m < 10 then
-        _m = "0".._m
-    end
-    if _s < 10 then
-        _s = "0".._s
-    end
-    if _d > 0 then
-        timeData = _d.."天".._h..":".._m..":".._s
-    else
-        timeData = _h..":".._m..":".._s
-    end
-    return timeData
-end
-
+-- 格式化文本
+-- @param s string
+-- @return string
 function utils.FormatText(s, ...)
     local ret = s
     local args = { ... }

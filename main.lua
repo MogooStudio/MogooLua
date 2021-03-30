@@ -21,11 +21,11 @@ utils
 
 ]]
 
-local tm = utils.GetReaminSecondsTo24()
-local timeData = utils.FormatTime(tm)
+local sec = utils.GetReaminSecondsTo24()
+local timeData = utils.FormatTime(sec)
 print(timeData)
 
-tm = os.time()
+local tm = os.time()
 local week = utils.FormatWeekDay(tm)
 print(week)
 
