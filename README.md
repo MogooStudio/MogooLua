@@ -1,7 +1,4 @@
 # MogooLua
-![JetBrains Toolbox Version](https://img.shields.io/badge/Toolbox-tools-red?style=flat-square)
-![JetBrains IntelliJIDEA Version](https://img.shields.io/badge/IntelliJIDEA-v2020.3.3-green?style=flat-square)
-![GitHub](https://img.shields.io/github/license/MogooStudio/Mogoo?style=flat-square)   
 lua记录
 
 ### 功能介绍
