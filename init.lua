@@ -1,2 +1,2 @@
 require "functional.init"
-require "uiframe.init"
+require "uiframework.init"
